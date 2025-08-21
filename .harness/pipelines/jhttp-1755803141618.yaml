@@ -43,4 +43,4 @@ pipeline:
             type: Docker
         type: CI
   delegateSelectors:
-    - linux-amd64
+    - njm3-docker-delegate
