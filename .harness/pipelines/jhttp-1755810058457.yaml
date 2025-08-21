@@ -45,4 +45,4 @@ pipeline:
             type: Docker
         type: CI
   delegateSelectors:
-    - docker-delegate
+    - njm_23_delegate
