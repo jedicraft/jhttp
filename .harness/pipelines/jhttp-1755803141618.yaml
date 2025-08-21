@@ -42,3 +42,5 @@ pipeline:
             spec: {}
             type: Docker
         type: CI
+  delegateSelectors:
+    - njm3-docker-delegate
