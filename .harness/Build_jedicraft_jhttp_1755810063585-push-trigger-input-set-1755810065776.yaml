@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_jedicraft_jhttp_1755810063585-push-trigger-input-set
+  identifier: Build_jedicraft_jhttp_1755810063585pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: Project1
+  pipeline:
+    identifier: Build_jedicraft_jhttp_1755810063585
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
