@@ -1,0 +1,41 @@
+pipeline:
+  name: jHttp-2
+  identifier: jHttp2
+  projectIdentifier: Project4
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        repoName: account.harness-filestore
+        build: <+input>
+  stages:
+    - stage:
+        name: Build and Push
+        identifier: Build_and_Push
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: NewNewHomeTestDR
+                    repo: e603da32796303294b718af170027966cb54aaa1e1b38cf58d33dbb98f32de1d
+                    tags:
+                      - main
