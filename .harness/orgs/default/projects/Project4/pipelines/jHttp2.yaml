@@ -38,4 +38,4 @@ pipeline:
                     connectorRef: NewNewHomeTestDR
                     repo: e603da32796303294b718af170027966cb54aaa1e1b38cf58d33dbb98f32de1d
                     tags:
-                      - main
+                      - njm-455-docker-delegate
