@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_jedicraft_jhttp_1756078331751-pr-trigger-input-set
+  identifier: Build_jedicraft_jhttp_1756078331751prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: Project2
+  pipeline:
+    identifier: Build_jedicraft_jhttp_1756078331751
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
