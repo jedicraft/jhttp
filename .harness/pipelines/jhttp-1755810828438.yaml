@@ -35,16 +35,6 @@ pipeline:
                     command: |-
                       echo "Welcome to Harness CI"
                       mvn -B package --file pom.xml
-              - step:
-                  type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry_1
-                  identifier: BuildAndPushDockerRegistry_1
-                  spec:
-                    connectorRef: NewNewHomeTestDR
-                    repo: e603da32796303294b718af170027966cb54aaa1e1b38cf58d33dbb98f32de1d
-                    tags:
-                      - new
-                    caching: false
           platform:
             os: Linux
             arch: Amd64
