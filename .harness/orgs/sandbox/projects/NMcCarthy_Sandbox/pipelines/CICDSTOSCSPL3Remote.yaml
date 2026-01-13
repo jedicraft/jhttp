@@ -1,0 +1,134 @@
+pipeline:
+  name: CI-CD-STO-SCS-PL3-Remote
+  identifier: CICDSTOSCSPL3Remote
+  projectIdentifier: NMcCarthy_Sandbox
+  orgIdentifier: sandbox
+  tags:
+    ai_generated: "true"
+  properties:
+    ci:
+      codebase:
+        connectorRef: jedicraftGitHub
+        repoName: jhttp
+        build: <+input>
+  stages:
+    - stage:
+        name: Build-Test-Push
+        identifier: BuildTestPush
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              imageSpec:
+                imageName: ubuntu-latest
+          execution:
+            steps:
+              - step:
+                  type: Snyk
+                  name: Snyk Scan - SCA
+                  identifier: Snyk_Scan_SCA
+                  spec:
+                    mode: orchestration
+                    config: oss
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                    privileged: true
+                    auth:
+                      access_token: <+secrets.getValue("snyk_token")>
+                    sbom:
+                      generate: true
+                      format: spdx-json
+              - step:
+                  type: Run
+                  name: Maven Build
+                  identifier: Maven_Build
+                  spec:
+                    connectorRef: account.DockerHub
+                    image: maven:3.9-eclipse-temurin-8
+                    shell: Sh
+                    command: mvn package -DskipTests
+              - step:
+                  type: Test
+                  name: Test Intelligence
+                  identifier: Test_Intelligence
+                  spec:
+                    image: maven:3.9-eclipse-temurin-8
+                    shell: Sh
+                    command: mvn clean test
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - target/surefire-reports/*.xml
+                    intelligenceMode: false
+              - step:
+                  type: Sonarqube
+                  name: Sonarqube Scan - SAST
+                  identifier: Sonarqube_Scan_SAST
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                      args:
+                        cli: "-Dsonar.organization=jedicraft -Dsonar.java.binaries=target/jhttp-1.0-SNAPSHOT.jar"
+                    auth:
+                      access_token: <+secrets.getValue("sonarqube_token")>
+                      domain: https://sonarcloud.io
+                      ssl: true
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Push to Harness AR
+                  identifier: Push_to_Harness_AR
+                  spec:
+                    repo: jhttp
+                    tags:
+                      - <+pipeline.sequenceId>
+                    caching: true
+                    registryRef: test_ar
+              - step:
+                  type: SscaOrchestration
+                  name: SBOM Generation
+                  identifier: SBOM_Generation
+                  spec:
+                    mode: generation
+                    tool:
+                      type: Syft
+                      spec:
+                        format: spdx-json
+                    source:
+                      type: har
+                      spec:
+                        registry: test_ar
+                        image: jhttp:<+pipeline.sequenceId>
+                    attestation:
+                      type: cosign
+                      spec:
+                        privateKey: cosign_private_key
+                        password: cosign_password
+                    sbom_drift:
+                      base: last_generated_sbom
+                    resources:
+                      limits:
+                        memory: 500Mi
+                        cpu: "0.5"
+                    imageTag: latest
