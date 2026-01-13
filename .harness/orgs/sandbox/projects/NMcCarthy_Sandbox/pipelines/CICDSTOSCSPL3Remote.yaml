@@ -69,13 +69,13 @@ pipeline:
                   spec:
                     image: maven:3.9-eclipse-temurin-8
                     shell: Sh
-                    command: mvn clean test
+                    command: mvn clean verify
                     reports:
                       type: JUnit
                       spec:
                         paths:
                           - target/surefire-reports/*.xml
-                    intelligenceMode: false
+                    intelligenceMode: true
               - step:
                   type: Sonarqube
                   name: Sonarqube Scan - SAST
