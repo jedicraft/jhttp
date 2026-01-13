@@ -76,6 +76,8 @@ pipeline:
                         paths:
                           - target/surefire-reports/*.xml
                     intelligenceMode: true
+                    globs:
+                      - "**/*Test.java"
               - step:
                   type: Sonarqube
                   name: Sonarqube Scan - SAST
