@@ -1,0 +1,11 @@
+inputSet:
+  name: jhttp_InputSet
+  identifier: jhttp_InputSet
+  orgIdentifier: sandbox
+  projectIdentifier: NMcCarthy_Sandbox
+  pipeline:
+    identifier: CICDSTOSCSPL3Remote
+    properties:
+      ci:
+        codebase:
+          build: <+input>
