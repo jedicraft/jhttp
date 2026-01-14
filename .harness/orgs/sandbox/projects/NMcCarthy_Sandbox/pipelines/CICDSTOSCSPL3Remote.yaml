@@ -134,18 +134,3 @@ pipeline:
                         memory: 500Mi
                         cpu: "0.5"
                     imageTag: latest
-              - step:
-                  type: SscaArtifactSigning
-                  name: Artifact Signing
-                  identifier: Artifact_Signing
-                  spec:
-                    source:
-                      type: docker
-                      spec:
-                        connector: test_ar_HAR
-                        image: <+pipeline.sequenceId>
-                    signing:
-                      type: cosign
-                      spec:
-                        private_key: cosign_private_key
-                        password: cosign_password
