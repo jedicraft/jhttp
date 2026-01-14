@@ -140,10 +140,10 @@ pipeline:
                   identifier: Artifact_Signing
                   spec:
                     source:
-                      type: docker
+                      type: local
                       spec:
-                        connector: DockerHub
-                        image: jhttp:<+pipeline.sequenceId>
+                        workspace: <+pipeline.stages.BuildTestPush.spec.execution.steps.Push_to_Harness_AR.artifact_Push_to_Harness_AR.stepArtifacts.publishedImageArtifacts[0].url>
+                        type: auto
                     signing:
                       type: cosign
                       spec:
