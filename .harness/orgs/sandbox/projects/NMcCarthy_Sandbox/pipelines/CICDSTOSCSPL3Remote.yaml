@@ -134,18 +134,3 @@ pipeline:
                         memory: 500Mi
                         cpu: "0.5"
                     imageTag: latest
-              - step:
-                  type: SscaArtifactSigning
-                  name: Artifact Signing
-                  identifier: Artifact_Signing
-                  spec:
-                    source:
-                      type: local
-                      spec:
-                        workspace: <+pipeline.stages.BuildTestPush.spec.execution.steps.Push_to_Harness_AR.artifact_Push_to_Harness_AR.stepArtifacts.publishedImageArtifacts[0].url>
-                        type: auto
-                    signing:
-                      type: cosign
-                      spec:
-                        private_key: cosign_private_key
-                        password: cosign_password
