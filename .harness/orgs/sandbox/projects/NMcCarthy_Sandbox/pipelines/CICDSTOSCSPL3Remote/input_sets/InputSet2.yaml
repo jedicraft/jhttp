@@ -1,0 +1,14 @@
+inputSet:
+  name: InputSet2
+  identifier: InputSet2
+  orgIdentifier: sandbox
+  projectIdentifier: NMcCarthy_Sandbox
+  pipeline:
+    identifier: CICDSTOSCSPL3Remote
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
